@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9cd3d148-f27a-4b39-9966-121de9d32fd6" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/file_handling.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/midi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PolyReaderTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/PolyReaderTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Enter_Sandman_1.mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file.mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1.mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file2.mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/metal_rock_freemidis.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/metallica.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/metallica.mdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mz_311_1.mid" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
