@@ -1,11 +1,13 @@
 import os
 import pickle
 from os import path
+from typing import List
 import midi
 
 from src.constants import InstrumentCategory, Instrument, category_from_program, instrument_from_program
 from src.file_handling import FilePath, recursive_scanner
 from src.midi import read_midi
+from src.conditions import Condition
 
 
 class DatabaseContainer(object):
@@ -62,7 +64,7 @@ class TrackContainer(DatabaseContainer):
         # explicitely store track
         self.track = kwargs['track']
 
-    def store_track_as_file(self, base_path : FilePath):
+    def store_track_as_file(self, base_path : str):
 
         pattern = midi.Pattern()
 
@@ -142,6 +144,24 @@ class Database(object):
             container_list = get_container_list_from_file(fp, with_track=False)
             self.track_db.extend(container_list)
 
-    def export(self, filename):
+    def export(self, filename : str):
         print("Export database to %s" % filename)
         pickle.dump(self, open(filename, "wb"))
+
+    def export_files(self, condition : Condition, output_path : str):
+        marked_tracks = []
+        needed_files = {}
+
+        # check database to find all files that need to be touched
+        for track_head in self.track_db:
+            if condition.validate(track_head):
+                marked_tracks.append(track_head)
+                needed_files[self.base_path + track_head.relative_file_path + track_head.file_name] = FilePath(track_head.relative_file_path,
+                                                                                                             track_head.file_name,
+                                                                                                             self.base_path)
+        # open the files and export selected tracks
+        for fp in needed_files.values():
+            container_list = get_container_list_from_file(fp, with_track=True)
+            for track_container in container_list:
+                if condition.validate(track_container):
+                    track_container.store_track_as_file(output_path + "/")
