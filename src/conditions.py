@@ -1,6 +1,6 @@
 from typing import List
 
-from src.constants import Instrument
+from src.constants import Instrument, InstrumentCategory
 
 
 class Condition(object):
@@ -27,18 +27,35 @@ class InstrumentCondition(Condition):
     def validate(self, track_container):
         return track_container.instrument == self.instrument
 
+class CategoryCondition(Condition):
+
+    def __init__(self, parameter : str):
+        parameter = parameter.upper()
+        self.category = None
+        for category in InstrumentCategory:
+            if category.name == parameter:
+                self.category = category
+                break
+
+        if self.category == None:
+            assert False, "Could not match category to any existing category class"
+
+    def validate(self, track_container):
+        return track_container.category == self.category
 
 class ConditionManager(object):
 
+    condition_dict = {
+        'instrument': InstrumentCondition,
+        'category': CategoryCondition,
+    }
 
     def _create_condition(self, condition_string : str):
         split = condition_string.split("=")
         assert len(split) == 2, "Invalid condition syntax"
         command = split[0]
         parameter = split[1]
-
-        if command == "instrument":
-            return InstrumentCondition(parameter)
+        return self.condition_dict[command](parameter)
 
     def __init__(self, condition_strings : List[str]):
         self.conditions = []
