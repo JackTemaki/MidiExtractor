@@ -68,6 +68,7 @@ class TrackContainer(DatabaseContainer):
 
         pattern = midi.Pattern()
 
+        pattern.resolution = self.resolutuion
         # ticks need to be relative for export
         self.track.make_ticks_rel()
         pattern.append(self.track)

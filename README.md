@@ -22,5 +22,5 @@ Then you can use the meta information stored in the database to extract midi fil
 `midi_extractor.sh extract my_database.db guitars category=guitar`
 
 
- 
+ Details on the available instruments and instrument categories can be found in [src/constants.py](src/constants.py)
  
