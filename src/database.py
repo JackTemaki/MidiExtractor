@@ -7,7 +7,7 @@ import midi
 from src.constants import InstrumentCategory, Instrument, category_from_program, instrument_from_program
 from src.file_handling import FilePath, recursive_scanner
 from src.midi import read_midi
-from src.conditions import Condition
+from src.conditions import ConditionManager
 
 
 class DatabaseContainer(object):
@@ -148,20 +148,25 @@ class Database(object):
         print("Export database to %s" % filename)
         pickle.dump(self, open(filename, "wb"))
 
-    def export_files(self, condition : Condition, output_path : str):
+    def export_files(self, condition_manager : ConditionManager, output_path : str):
         marked_tracks = []
         needed_files = {}
 
+        print("Read database...")
         # check database to find all files that need to be touched
         for track_head in self.track_db:
-            if condition.validate(track_head):
+            if condition_manager.validate(track_head):
                 marked_tracks.append(track_head)
                 needed_files[self.base_path + track_head.relative_file_path + track_head.file_name] = FilePath(track_head.relative_file_path,
                                                                                                              track_head.file_name,
                                                                                                              self.base_path)
+        n_files = len(needed_files.values())
+        print("Load files and export tracks...")
         # open the files and export selected tracks
-        for fp in needed_files.values():
+        for i,fp in enumerate(needed_files.values()):
+            if i % 100:
+                print("\r%.2f %%" % ((i*100.0)/n_files), end='')
             container_list = get_container_list_from_file(fp, with_track=True)
             for track_container in container_list:
-                if condition.validate(track_container):
+                if condition_manager.validate(track_container):
                     track_container.store_track_as_file(output_path + "/")

@@ -2,7 +2,7 @@ import sys
 import os
 import pickle
 from src.database import Database
-from src.conditions import Condition
+from src.conditions import ConditionManager
 
 
 def query_yes_no(question, default="yes"):
@@ -56,21 +56,22 @@ def main():
 
     if command == "extract":
         assert len(sys.argv) >= 3, "Invalid number of arguments for calling extract"
-        assert os.path.isfile(sys.argv[1]), "Invalid database file"
-        if os.path.isdir(sys.argv[2]):
+        assert os.path.isfile(sys.argv[2]), "Invalid database file"
+        if os.path.isdir(sys.argv[3]):
             result = query_yes_no("Output path already exists, do you want to use it?", default='no')
             if not result:
                 sys.exit(0)
 
         database_path = sys.argv[2]
         export_path = sys.argv[3]
-        conditions = sys.argv[3:]
+        conditions = sys.argv[4:]
 
         db = pickle.load(open(database_path, "rb"))
         assert isinstance(db, Database), "File is not a valid database"
 
-        condition = Condition(conditions)
-        db.export_files(condition=condition, output_path=export_path)
+        print("Check conditions...")
+        condition = ConditionManager(conditions)
+        db.export_files(condition_manager=condition, output_path=export_path)
 
 
 if __name__ == '__main__':
