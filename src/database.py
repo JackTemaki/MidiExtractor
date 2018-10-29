@@ -47,6 +47,13 @@ class DatabaseContainer(object):
                 self.category = category_from_program(program)
                 self.instrument = instrument_from_program(program)
 
+            if isinstance(event, midi.TimeSignatureEvent):
+                self.numerator = event.numerator
+                self.denominator = event.denominator
+                print("%i/%i" % (self.numerator, self.denominator))
+                self.metronome = event.metronome
+                self.thirties  = event.thirtyseconds
+
             # first note is never before meta, we also assume single channel tracks
             if isinstance(event, midi.NoteOnEvent):
                 self.channel = event.channel + 1

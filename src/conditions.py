@@ -1,7 +1,7 @@
 from typing import List
 
 from src.constants import Instrument, InstrumentCategory
-
+import math
 
 class Condition(object):
 
@@ -43,11 +43,29 @@ class CategoryCondition(Condition):
     def validate(self, track_container):
         return track_container.category == self.category
 
+class TimeSignatureCondition(Condition):
+
+    def __init__(self, parameter : str):
+        param_split = parameter.split("/")
+        assert len(param_split) == 2, "Invalid time signature"
+
+        self.numerator = int(param_split[0])
+        self.denominator = int(param_split[1])
+
+        print("%i/%i" % (self.numerator, self.denominator))
+
+    def validate(self, track_container):
+        if not hasattr(track_container, 'numerator'):
+            return False
+        return track_container.numerator == self.numerator and track_container.denominator == self.denominator
+
+
 class ConditionManager(object):
 
     condition_dict = {
         'instrument': InstrumentCondition,
         'category': CategoryCondition,
+        'signature': TimeSignatureCondition,
     }
 
     def _create_condition(self, condition_string : str):
