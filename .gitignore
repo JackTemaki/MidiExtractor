@@ -107,3 +107,4 @@ data/
 *.mid
 *.db
 .idea/
+*.sf2
